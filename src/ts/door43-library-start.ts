@@ -51,13 +51,13 @@ document.addEventListener("DOMContentLoaded", function() {
         my_mt_id = window.mt_id;
     }
 
-    // load OBS now
-    const obs = new OBS(dcs_domain, tracker_url, my_mt_id, function(error: string) {
+    // load D43 now
+    const d43 = new D43(dcs_domain, tracker_url, my_mt_id, function(error: string) {
         if (error)
-            obs.displayError(error);
+            d43.displayError(error);
         else if (typeof initMap === 'function')
-            obs.buildDiv(initMap);
+            d43.buildDiv(initMap);
         else
-            obs.buildDiv();
+            d43.buildDiv();
     });
 });

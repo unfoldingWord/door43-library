@@ -84,8 +84,8 @@ class DownloadableTypes {
     other: Format[] = [];
 }
 
-class OBS {
-    static obs: OBS = new OBS();
+class D43 {
+    static d43: D43 = new D43();
 
     /**
      * {0} = language code
@@ -150,7 +150,7 @@ class OBS {
         this.mt_id = mt_id;
         this.callback = callback;
 
-        OBS.obs = this;
+        D43.obs = this;
         this.populateLangnames();
         this.populateCatalog();
     }
@@ -187,29 +187,18 @@ class OBS {
 
     populateCatalog() {
         let me = this;
-        const subjects = [
-            'Open Bible Stories',
-            'OBS Study Notes',
-            'TSV OBS Study Notes',
-            'OBS Study Questions',
-            'TSV OBS Study Questions',
-            'OBS Translation Notes',
-            "TSV OBS Translation Notes",
-            'OBS Translation Questions',
-            "TSV OBS Translation Questions",
-        ];
-        const catalog_url = `https://${this.dcs_domain}/api/v1/catalog/search?sort=released&order=desc&includeHistory=1&${subjects.map(arg => `subject=${encodeURIComponent(arg)}`).join('&')}`;
+        const catalog_url = `https://${this.dcs_domain}/api/v1/catalog/search?sort=released&order=desc&includeHistory=1&metadataType=rc`;
         $.ajax({
             url: catalog_url,
             dataType: 'json',
             context: this,
         }).done(resp => {
-            me.extractOBS(resp.data);
+            me.extractD43(resp.data);
             me.loadResult = 'Successfully loaded catalog data.';
             if (typeof me.callback !== 'undefined')
                 me.callback();
         }).fail((jqXHR, textStatus, errorThrown) => {
-            const error = `<div style="color:red">Faile to fetch data from <a href="${catalog_url}" target="_blank">${catalog_url}</a> on the OBS library page.<br/><br/>Please reload. If the problem persists, please <a href="https://www.unfoldingword.org/contact/" target="_new">contact us</a> with this error message.</div>`;
+            const error = `<div style="color:red">Faile to fetch data from <a href="${catalog_url}" target="_blank">${catalog_url}</a> on the D43 library page.<br/><br/>Please reload. If the problem persists, please <a href="https://www.unfoldingword.org/contact/" target="_new">contact us</a> with this error message.</div>`;
             console.log(error);
             if (typeof me.callback !== 'undefined')
                 me.callback(error);
@@ -217,10 +206,10 @@ class OBS {
     }
 
     /**
-     * Extracts the languages with OBS entries from the catalog
-     * @param data The catalog from https://git.door43.org/api/v1/catalog/search?includeHistory=1&subject=<all OBS subjects>
+     * Extracts the languages with D43 entries from the catalog
+     * @param data The catalog from https://git.door43.org/api/v1/catalog/search?includeHistory=1&metadataType=rc
      */
-    extractOBS(data: Object[]): void {
+    extractD43(data: Object[]): void {
         let me = this;
         data.forEach(item => {
             // if (item['language'] != 'en' && item['language'] != 'es-419') return;
@@ -266,7 +255,7 @@ class OBS {
         fmt.name = asset.name;
         fmt.asset = asset;
         fmt.prefix = asset.browser_download_url.getHostName();
-        fmt.format = OBS.getFormatFromName(asset.name);
+        fmt.format = D43.getFormatFromName(asset.name);
         fmt.version = entry.release.tag_name;
         let type: string = "other";
 
@@ -302,7 +291,7 @@ class OBS {
         let version = fileparts[3];
         let info = fileparts[4];
         let ext = fileparts[5];
-        let format = OBS.getFormatFromName(asset.name);
+        let format = D43.getFormatFromName(asset.name);
         const audioparts = audioparts_regex.exec(info);
         if (audioparts && (ext == "zip" || ext == "mp3" || ext == "mp4")) {
             let quality = audioparts[2];
@@ -478,8 +467,16 @@ class OBS {
                 $owner_accordion.append($owner_content);
 
                 Object.keys(owner.subjects).sort((a: string, b: string) => {
-                    // List Open Bible Stories first, all others alphabetically
-                    return (a.startsWith("open") ? -1 : (b.startsWith("open") ? 1 : a.localeCompare(b)));
+                    // List Bibles first, OBS last, and Open Bible Stories first before other OBS resources
+                    return (a.endsWith("bible") && ! b.endsWith("bible") ? -1 : 
+                        (a.startsWith("open") && b.startsWith("obs") ? -1 : 
+                            (b.startsWith("open") && a.startsWith("obs") ? 1 : 
+                                (a.startsWith("open") ? 1 : 
+                                    (b.startsWith("open") ? -1 : a.localeCompare(b))
+                                )
+                            )
+                        )
+                    );
                 }).forEach(subjectId => {
                     let subject = owner.subjects[subjectId]
 
@@ -511,23 +508,23 @@ class OBS {
                     let downloadable_types = this.getDownloadableTypes(subject.entries);
 
                     if (downloadable_types.text.length > 0) {
-                        $subject_content.append(OBS.downloadable_type_desc.format('Text'));
-                        $subject_content.append(OBS.getList(downloadable_types.text, locale_title));
+                        $subject_content.append(D43.downloadable_type_desc.format('Text'));
+                        $subject_content.append(D43.getList(downloadable_types.text, locale_title));
                     }
 
                     if (downloadable_types.audio.length > 0) {
-                        $subject_content.append(OBS.downloadable_type_desc.format('Audio'));
-                        $subject_content.append(OBS.getList(downloadable_types.audio, locale_title ));
+                        $subject_content.append(D43.downloadable_type_desc.format('Audio'));
+                        $subject_content.append(D43.getList(downloadable_types.audio, locale_title ));
                     }
 
                     if (downloadable_types.video.length > 0) {
-                        $subject_content.append(OBS.downloadable_type_desc.format('Video'));
-                        $subject_content.append(OBS.getList(downloadable_types.video, top_entry.title));
+                        $subject_content.append(D43.downloadable_type_desc.format('Video'));
+                        $subject_content.append(D43.getList(downloadable_types.video, top_entry.title));
                     }
 
                     if (downloadable_types.other.length > 0) {
-                        $subject_content.append(OBS.downloadable_type_desc.format('Other'));
-                        $subject_content.append(OBS.getList(downloadable_types.other, top_entry.title));
+                        $subject_content.append(D43.downloadable_type_desc.format('Other'));
+                        $subject_content.append(D43.getList(downloadable_types.other, top_entry.title));
                     }
                 });
             });
@@ -659,7 +656,7 @@ class OBS {
     private static getFormatFromName(name: string): string {
         if (!name)
             return '';
-        var ext = OBS.getFileExt(name.toLowerCase());
+        var ext = D43.getFileExt(name.toLowerCase());
         var zip_type_regex = /_(mp3|3gp|mp4)_/gi;
         switch (ext) {
             case '3gp':
@@ -724,7 +721,7 @@ class OBS {
         let title = fmt.asset.name;
 
         if (!fmt.format) {
-            fmt.format = OBS.getFormatFromName(fmt.asset.name);
+            fmt.format = D43.getFormatFromName(fmt.asset.name);
         }
 
         let fmt_description: string;
@@ -750,7 +747,7 @@ class OBS {
 
         let mime_parts = mime.split('/');
         let show_size = true;
-        let is_source_regex = new RegExp(`https://${OBS.obs.dcs_domain}/[^/]+/[^/]+/archive/`, 'gi'); 
+        let is_source_regex = new RegExp(`https://${D43.obs.dcs_domain}/[^/]+/[^/]+/archive/`, 'gi'); 
         switch (mime_parts[mime_parts.length - 1]) {
             case 'pdf':
                 fmt_description = 'PDF';
@@ -774,7 +771,7 @@ class OBS {
                 fmt_class = 'fa-globe';
                 show_size = false;
                 break;
-            case OBS.obs.dcs_domain:
+            case D43.obs.dcs_domain:
                 title = fmt.name;
                 fmt_description = 'Source Files';
                 fmt_class = 'fa-file-lines';
@@ -839,7 +836,7 @@ class OBS {
 
         let size_string = ''
         if (show_size && fmt.asset.size > 0) {
-            size_string = OBS.getSize(fmt.asset.size);
+            size_string = D43.getSize(fmt.asset.size);
             if (is_zipped) {
                 size_string += ' zipped';
             }
@@ -853,7 +850,7 @@ class OBS {
             title = '<span style="color: #606060">Chapter&nbsp;' + parseInt((<Chapter>fmt).identifier).toLocaleString() + ':</span> ' + title
         }
 
-        return OBS.description.format(fmt_class, title, fmt_description, size_string);
+        return D43.description.format(fmt_class, title, fmt_description, size_string);
     }
 
     private static getSize(file_size: number): string {
@@ -892,27 +889,27 @@ class OBS {
 
             let fmt: Format = downloadable_type[n];
 
-            let description = OBS.getDescription(fmt);
+            let description = D43.getDescription(fmt);
             if (description == null)
                 continue;
 
-            let $li = $(OBS.downloadable_li.format(fmt.asset.browser_download_url, description));
+            let $li = $(D43.downloadable_li.format(fmt.asset.browser_download_url, description));
             if ( ! ('chapters' in fmt) || (fmt.chapters.length < 1) ) {
                 $ul.append
             } else {
-                $li.append(OBS.chapters_h3);
+                $li.append(D43.chapters_h3);
 
-                let $chapters_ul: JQuery = $(OBS.chapters_ul);
+                let $chapters_ul: JQuery = $(D43.chapters_ul);
 
                 for (let m = 0; m < fmt.chapters.length; m++) {
 
                     let chap: Chapter = fmt.chapters[m];
 
-                    let chap_description = OBS.getDescription(chap);
+                    let chap_description = D43.getDescription(chap);
                     if (chap_description == null)
                         continue;
 
-                    let $chapter_li = $(OBS.downloadable_li.format(chap.asset.browser_download_url, chap_description));
+                    let $chapter_li = $(D43.downloadable_li.format(chap.asset.browser_download_url, chap_description));
                     $chapters_ul.append($chapter_li);
                 }
 
@@ -942,8 +939,8 @@ function track_create(anchor: HTMLAnchorElement, mt_id?: string) {
         return;
     }
     if (!mt_id) {
-        if(OBS.obs.mt_id)
-            mt_id = OBS.obs.mt_id;
+        if(D43.obs.mt_id)
+            mt_id = D43.obs.mt_id;
         else
             return;
     }
@@ -954,7 +951,7 @@ function track_create(anchor: HTMLAnchorElement, mt_id?: string) {
     let lang = 'en';
     let category = 'stories'
 
-    let fmt = OBS.obs.downloads[download_url]; // check if is from the DCS Catalog
+    let fmt = D43.obs.downloads[download_url]; // check if is from the DCS Catalog
     if (fmt) {
         ext = fmt.ext;
         filename = fmt.name;
@@ -992,7 +989,7 @@ function track_create(anchor: HTMLAnchorElement, mt_id?: string) {
         category = 'sq';
 
     const url = "{0}?mt_id={1}&mt_lang={2}&mt_file={3}&mt_category={4}".format(
-        OBS.obs.tracker_url,
+        D43.obs.tracker_url,
         encodeURIComponent(mt_id),
         encodeURIComponent(lang),
         encodeURIComponent(filename),
