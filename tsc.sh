@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 declare -a files=("strings"
-                  "obs"
-                  "obs-start"
+                  "door43-library"
+                  "door43-library-start"
                   "lang-names"
                   "map_data"
                   "region_data"

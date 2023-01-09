@@ -34,7 +34,7 @@ module.exports = function (config) {
         // list of files to exclude
         exclude: [
             'build/js/*.min.js',
-            'build/js/obs-start.js'
+            'build/js/door43-library-start.js'
         ],
 
 

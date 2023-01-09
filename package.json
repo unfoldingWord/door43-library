@@ -1,10 +1,10 @@
 {
-  "name": "obs-web",
+  "name": "door43-library",
   "version": "0.1.1",
-  "description": "The Javascript used in the frontend of https://www.openbiblestories.org/library",
+  "description": "The Javascript used in the frontend of https://door43.org/en/library",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unfoldingword-dev/obs-web.git"
+    "url": "https://github.com/unfoldingword-dev/door43-library.git"
   },
   "license": "MIT",
   "private": true,

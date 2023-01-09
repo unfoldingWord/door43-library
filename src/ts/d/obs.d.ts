@@ -96,11 +96,10 @@ declare class OBS {
         [key: string]: Format;
     };
     dcs_domain: string;
-    tracker_domain: string;
-    catalog_url: string;
-    log_downloads_url: string;
+    tracker_url: string;
+    mt_id?: string | null;
     callback?: Function;
-    constructor(dcs_domain: string, catalog_url: string, log_downloads_url: string, callback?: Function);
+    constructor(dcs_domain?: string | null, tracker_url?: string | null, mt_id?: string | null, callback?: Function);
     populateLangnames(): void;
     populateCatalog(): void;
     extractOBS(data: Object[]): void;
@@ -116,4 +115,5 @@ declare class OBS {
     private static getSize;
     private static getList;
 }
-declare function log_download(anchor: any): void;
+declare function last_node_from_url(url: string): string;
+declare function track_create(anchor: HTMLAnchorElement, mt_id?: string): void;

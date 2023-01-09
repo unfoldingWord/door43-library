@@ -1,12 +1,12 @@
-# OBS Website Code
+# Door43 Library Page Code
 
 ## Priority #1 - User-friendly Library Page
 
-Target location: [https://openbiblestories.org/library](https://openbiblestories.org/library)
+Target location: [https://door43.org/en/library](https://door43.org/library)
 
-Hosting location: [https://account.squarespace.com/](https://account.squarespace.com/)
+Testing location: [https://door43-library.netlify.aoo](https://door43-library.netlify.aoo)
 
-#### OBS Formats for download:
+#### Formats for download:
 
 * PDF
 * DOCX
@@ -19,33 +19,27 @@ Hosting location: [https://account.squarespace.com/](https://account.squarespace
 
 #### User interface recommendations
 
-See http://openchannelmedia.org/ for an example
+See http://door43-library.netlify.app/ for an example
 
 * Use world map to separate languages by continent for natural, easy discovery by end-users.
 * Use accordion to show/hide resources per language
 * Keep alignment of language and its resources compact, not spread across entire page or taking up lots of screen real estate (i.e. the current uW OBS page is consistently reported as confusing and not user friendly)
 * Include file size information so users can gauge their ability to download and therefore choose the optimal time or format. 
 
-## Priority #2  - View of what is coming soon in the pipeline
 
-* Perhaps a sidebar or a separate page. It would be helpful for people to be aware of what is coming. This could improve collaboration to bring things past the finish line. It could reduce redundancy occurring in isolation, etc.
-* Provide language name, link to view translation status on d43, contact info of contributors, etc.
+## Developing: Quckstart (see below for details)
 
-## Perhaps unrelated, but needed:
+`clone git@github.com:unfoldingWord/door43-library.git`
 
-* Validation process whereby qualified expert in language group verifies that the OBS PDF is accurate, complete and no issues exist with typeface or layout.
-* Way to upload/publish audio & video to door43 so it can be on the OBS site.
+`cd door43-library`
 
+`npm i`
 
-## Developing, Building & Testing
+`npm run build && npm start`
 
-### To Setup the Development Environment:
+To quickly only compile changes:
 
-##### Clone the repo:
-
-```
-  $ git clone git@github.com:unfoldingword-dev/obs-web.git
-```
+`npm run build-obs && run start`
 
 ##### Install node.js:
 
@@ -68,7 +62,7 @@ See http://openchannelmedia.org/ for an example
 #### Load the dependencies:
 
 ```
-  $ cd obs-web
+  $ cd door43-library
   $ npm ci
 ```
 
@@ -110,7 +104,7 @@ If you modify the package.json file to add/update dependencies, run:
 
   where `8888` is the port that will be used, and [http://127.0.0.1:8888](http://127.0.0.1:8888) is where you can view the html page.
 
-  **NOTE:** This uses the production OBS Catalog file at [https://api.door43.org/v3/subjects/Open_Bible_Stories.json](https://api.door43.org/v3/subjects/Open_Bible_Stories.json). If you need to use a local copy of the JSON file, you need to put it in the `build/` directory make the following change at [src/ts/obs-start.ts#L37](src/ts/obs-start.ts#L37):
+  **NOTE:** This uses the production OBS Catalog file at [https://api.door43.org/v3/subjects/Open_Bible_Stories.json](https://api.door43.org/v3/subjects/Open_Bible_Stories.json). If you need to use a local copy of the JSON file, you need to put it in the `build/` directory make the following change at [src/ts/door43-library-start.ts#L37](src/ts/door43-library-start.ts#L37):
 
   Change
 ```
@@ -150,24 +144,24 @@ If you modify the package.json file to add/update dependencies, run:
 
   The `output/` directory has the production files, where `build/index.html` is an example of what can be placed at [https://openbiblestories.org/library](https://openbiblestories.org/library).
 
-  When the `develop` branch is updated for the [https://www.github.com/unfoldingword-dev/obs-web](https://www.github.com/unfoldingword-dev/obs-web) repo, it will automatically be built at [https://obs-web.netlify.app](https://obs-web.netlify.app). The JS and CSS files can then be used elsewhere, such as on squarespace.com by linking them as follows:
+  When the `develop` branch is updated for the [https://www.github.com/unfoldingword-dev/door43-library](https://www.github.com/unfoldingword-dev/door43-library) repo, it will automatically be built at [https://door43-library.netlify.app](https://door43-library.netlify.app). The JS and CSS files can then be used elsewhere, such as on squarespace.com by linking them as follows:
 
 ```
-<link data-preserve-html-node="true" rel="stylesheet" href="https://obs-web.netlify.app/css/map-style.min.css" type="text/css" media="all">
+<link data-preserve-html-node="true" rel="stylesheet" href="https://door43-library.netlify.app/css/map-style.min.css" type="text/css" media="all">
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script data-preserve-html-node="true" type="text/javascript" src="https://use.fontawesome.com/ac6410a9c6.js"></script>
-<script data-preserve-html-node="true" type="text/javascript" src="https://obs-web.netlify.app/js/strings.min.js"></script>
-<script data-preserve-html-node="true" type="text/javascript" src="https://obs-web.netlify.app/js/region_data.min.js"></script>
-<script data-preserve-html-node="true" type="text/javascript" src="https://obs-web.netlify.app/js/map_data.min.js"></script>
-<script data-preserve-html-node="true" type="text/javascript" src="https://obs-web.netlify.app/js/map_interactive.min.js"></script>
-<script data-preserve-html-node="true" type="text/javascript" src="https://obs-web.netlify.app/js/obs.js"></script>
-<script data-preserve-html-node="true" type="text/javascript" src="https://obs-web.netlify.app/js/obs-start.js"></script>
+<script data-preserve-html-node="true" type="text/javascript" src="https://door43-library.netlify.app/js/strings.min.js"></script>
+<script data-preserve-html-node="true" type="text/javascript" src="https://door43-library.netlify.app/js/region_data.min.js"></script>
+<script data-preserve-html-node="true" type="text/javascript" src="https://door43-library.netlify.app/js/map_data.min.js"></script>
+<script data-preserve-html-node="true" type="text/javascript" src="https://door43-library.netlify.app/js/map_interactive.min.js"></script>
+<script data-preserve-html-node="true" type="text/javascript" src="https://door43-library.netlify.app/js/door43-library.js"></script>
+<script data-preserve-html-node="true" type="text/javascript" src="https://door43-library.netlify.app/js/door43-library-start.js"></script>
 <div data-preserve-html-node="true" id="clickable-map"></div>
 <div data-preserve-html-node="true" id="published-languages"><center><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
 <span class="sr-only">Loading...</span><br/>Loading...</center></div>
 ```
 
- Live example at: [https://obs-web.netlify.app/prod_example.html](https://obs-web.netlify.app/prod_example.html)
+ Live example at: [https://door43-library.netlify.app/prod_example.html](https://door43-library.netlify.app/prod_example.html)
 
 ## Other Documentation & Links
 
