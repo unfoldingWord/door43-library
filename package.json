@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "build": "./build.sh",
-    "build-obs": "./build_obs.sh",
+    "build-d43": "./build_d43.sh",
     "test": "karma start",
     "start": "http-server build"
   },

@@ -39,7 +39,7 @@ See http://door43-library.netlify.app/ for an example
 
 To quickly only compile changes:
 
-`npm run build-obs && run start`
+`npm run build-d43 && run start`
 
 ##### Install node.js:
 
@@ -86,7 +86,7 @@ If you modify the package.json file to add/update dependencies, run:
 
   This will build the minified js and css files in the `build/` directory.
 
-### To View the OBS Library Page Locally:
+### To View the Door43 Library Page Locally:
 
   Run the following to get the http-server going on port 8081:
 
