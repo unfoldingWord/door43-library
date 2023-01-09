@@ -142,7 +142,7 @@ If you modify the package.json file to add/update dependencies, run:
   $ npm run build
 ```
 
-  The `output/` directory has the production files, where `build/index.html` is an example of what can be placed at [https://openbiblestories.org/library](https://openbiblestories.org/library).
+  The `output/` directory has the production files, where `build/index.html` is an example of what can be placed at [https://door43.org/en/library](https://door43.org/en/library).
 
   When the `develop` branch is updated for the [https://www.github.com/unfoldingword-dev/door43-library](https://www.github.com/unfoldingword-dev/door43-library) repo, it will automatically be built at [https://door43-library.netlify.app](https://door43-library.netlify.app). The JS and CSS files can then be used elsewhere, such as on squarespace.com by linking them as follows:
 

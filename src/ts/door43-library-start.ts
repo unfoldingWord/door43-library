@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let dcs_domain = urlParams.get('dcs');
     if (! dcs_domain) {
-        if (window.location.hostname.endsWith("door43.org") || window.location.hostname == "door43-library.netlify.app" || window.location.hostname == "openbiblestories.squarespace.com") {
+        if (window.location.hostname == "door43.org" || window.location.hostname == "door43-library.netlify.app") {
             dcs_domain = 'git.door43.org';
         } else {
             dcs_domain = 'qa.door43.org';

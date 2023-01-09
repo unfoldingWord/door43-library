@@ -132,7 +132,7 @@ class OBS {
     languages: { [key: string]: Language; } = {};
     langnames: { [key: string]: any; } = {};
     downloads: { [key: string]: Format} = {}
-    dcs_domain: string = (window.location.hostname.endsWith("openbiblestories.org") ? "git.door43.org" : "qa.door43.org");
+    dcs_domain: string = (window.location.hostname == "door43.org" || window.location.hostname == "door43-library.netlify.app" ? "git.door43.org" : "qa.door43.org");
     tracker_url: string = "https://track.door43.org/track";
     mt_id?: string | null;
     callback?: Function;
@@ -159,15 +159,14 @@ class OBS {
      * Due to CORS, the file originally at https://td.unfoldingword.org/exports/langnames.json has
      * to reside on the same server as this script, and since we serving this script from
      * door43-library.netlify.app, it has to access the file there. The below code determines if we are
-     * on the SquareSpace openbiblestories.org site (or the squarespace.com site for editing), and
+     * on the AWS door43.org site, and
      * if so, adds 'door43-library.netlify.app' to the json/langnames.json URL. Otherwise it gets the one
      * we fetch in the build.sh script on build.
     */
     populateLangnames() {
         let me = this;
         let hostname = '';
-        if (window.location.hostname.indexOf("openbiblestories.org") >= 0 ||
-            window.location.hostname.indexOf("squarespace.com") >= 0) {
+        if (window.location.hostname.indexOf("door43.org") >= 0 {
             hostname = 'https://door43-library.netlify.app/';
         }
         $.ajax({
